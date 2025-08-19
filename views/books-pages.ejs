@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <title>Daftar Buku Saya</title>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1>Daftar Buku Saya</h1>
+      <p>Ini adalah halaman daftar buku saya.</p>
+
+      <!-- Form tambah book -->
+      <form id="addBookForm" class="mb-4">
+        <div class="form-group">
+          <input
+            type="text"
+            id="taskInput"
+            class="form-control"
+            placeholder="Buku baru..."
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-success">Tambah Buku</button>
+      </form>
+
+      <% if (books && books.length > 0) { %>
+      <ul class="list-group" id="booksList">
+        <% books.forEach(function(book) { %>
+        <li
+          class="list-group-item d-flex justify-content-between align-items-center"
+        >
+          <span>
+            ID: <%= book.id %> Buku:
+            <span id="task-<%= book.id %>"><%= book.task %></span>
+          </span>
+          <div>
+            <button
+              class="btn btn-warning btn-sm mr-2"
+              onclick="editBook(<%= book.id %>)"
+            >
+              Edit
+            </button>
+            <button
+              class="btn btn-danger btn-sm"
+              onclick="deleteBook(<%= book.id %>)"
+            >
+              Delete
+            </button>
+          </div>
+        </li>
+        <% }); %>
+      </ul>
+      <% } else { %>
+      <p>Tidak ada buku yang tersedia.</p>
+      <% } %>
+
+      <a href="/" class="btn btn-primary mt-3">Go to Home</a>
+    </div>
+
+    <script>
+      // POST (Tambah Buku)
+      document
+        .getElementById("addBookForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const task = document.getElementById("taskInput").value;
+          const res = await fetch("/books", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ task }),
+          });
+          if (res.ok) location.reload();
+        });
+
+      // PUT (Edit Buku)
+      async function editBook(id) {
+        const newTask = prompt("Edit judul buku:");
+        if (newTask) {
+          const res = await fetch("/books/" + id, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ task: newTask }),
+          });
+          if (res.ok) location.reload();
+        }
+      }
+
+      // DELETE (Hapus Buku)
+      async function deleteBook(id) {
+        if (confirm("Yakin hapus buku ini?")) {
+          const res = await fetch("/books/" + id, { method: "DELETE" });
+          if (res.ok) location.reload();
+        }
+      }
+    </script>
+  </body>
+</html>

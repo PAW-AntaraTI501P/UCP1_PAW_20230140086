@@ -1,0 +1,22 @@
+{
+  "name": "ucp1_paw_20230140086",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "express-ejs-layouts": "^2.5.1",
+    "mysql2": "^3.14.3",
+    "nodemon": "^3.1.10"
+  }
+}
